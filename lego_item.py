@@ -7,3 +7,13 @@ class LegoItem:
         self.complete = complete
         self.purchase_price = purchase_price
         self.estimated_value = estimated_value
+    def __str__(self):
+        return (
+            f"Set Name: {self.set_name}\n"
+            f"Set Number: {self.set_number}\n"
+            f"Theme: {self.theme}\n"
+            f"Condition: {self.condition}\n"
+            f"Complete: {self.complete}\n"
+            f"Purchase Price: ${self.purchase_price:.2f}\n"
+            f"Estimated Value: ${self.estimated_value:.2f}"
+        )
