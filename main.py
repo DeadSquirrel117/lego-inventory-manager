@@ -15,7 +15,9 @@ print("1. Add Item")
 print("2. View Inventory")
 print("3. View Total Value")
 print("4. Search")
-print("5. Exit")
+print("5. Delete Item")
+print("6. Edit Item")
+print("7. Exit")
 
 while True:
     choice = int(input("Type one of the numbers: "))
@@ -74,6 +76,46 @@ while True:
         if found == False:
             print("Sorry I cant find anything for that")
     elif choice == 5:
+        delete_num = int(input("Enter set number: "))
+        found = False
+        for item in inventory:
+            if delete_num == item.set_number:
+                found = True
+                print("Deleted",item.set_name)
+                inventory.remove(item)
+        if not found:
+                print("Set number not in Inventory")
+    elif choice == 6:
+        edit_num = int(input("Enter set number: "))
+        found = False
+        for item in inventory:
+            if edit_num == item.set_number:
+                found = True
+                print("1. Condition")
+                print("2. Purchase Price")
+                print("3. Estimated Value")
+                print("4. Complete")
+                edit_choice = int(input("What item would you like to edit: "))
+                if edit_choice == 1:
+                    new_condition = input("Enter new Condition: ")
+                    item.condition = new_condition
+                    print("Condition Updated")
+                    break
+                elif edit_choice == 2:
+                    new_price = float(input("Enter new Purchase Price: "))
+                    item.purchase_price = new_price
+                    print("Purcahse Price Updated")
+                elif edit_choice == 3:
+                    new_value = float(input("Enter new Estimated Value: "))
+                    item.estimated_value = new_value
+                    print("Estimated Value Updated")
+                elif edit_choice == 4:
+                    new_complete = input("Enter New Completion: ").lower()
+                    item.complete = new_complete
+                    print("Completion Updated")
+        if not found:
+            print("Cant find set number in inventory")
+    elif choice == 7:
         print("Goodbye!")
         break
     else:
