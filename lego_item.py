@@ -17,3 +17,13 @@ class LegoItem:
             f"Purchase Price: ${self.purchase_price:.2f}\n"
             f"Estimated Value: ${self.estimated_value:.2f}"
         )
+    def to_dict(self):
+        return {
+            "set_name": self.set_name,
+            "set_number": self.set_number,
+            "theme": self.theme,
+            "condition": self.condition,
+            "complete": self.complete,
+            "purchase_price": self.purchase_price,
+            "estimated_value": self.estimated_value
+    }

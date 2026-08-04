@@ -1,25 +1,40 @@
+import json
+import os
 from lego_item import LegoItem
-command_ship = LegoItem("Craggers Command Ship", 70006, "Chima", "used", False, 80, 70) 
-gorilla_striker = LegoItem("Gorzans Gorilla Striker", 70008, "Chima", "used", False, 50, 40)
+from inventory import get_total_value, view_inventory
 inventory = []
-inventory.append(command_ship)
-inventory.append(gorilla_striker)
+if os.path.exists("inventory.json"):
 
+    with open("inventory.json", "r") as file:
+        inventory_data = json.load(file)
 
+    for item in inventory_data:
+        lego_set = LegoItem(
+            item["set_name"],
+            item["set_number"],
+            item["theme"],
+            item["condition"],
+            item["complete"],
+            item["purchase_price"],
+            item["estimated_value"]
+        )
 
+        inventory.append(lego_set)
 
+    print("Inventory loaded successfully!")
 
-print("Lego Inventory Manager")
-
-print("1. Add Item")
-print("2. View Inventory")
-print("3. View Total Value")
-print("4. Search")
-print("5. Delete Item")
-print("6. Edit Item")
-print("7. Exit")
-
+else:
+    print("No inventory file found.")
 while True:
+    print("Lego Inventory Manager")
+
+    print("1. Add Item")
+    print("2. View Inventory")
+    print("3. View Total Value")
+    print("4. Search")
+    print("5. Delete Item")
+    print("6. Edit Item")
+    print("7. Exit")
     choice = int(input("Type one of the numbers: "))
     if choice == 1:
         set_name = input("Enter set name: ")
@@ -33,15 +48,9 @@ while True:
         inventory.append(new_item)
         print("Added ", new_item.set_name, "to the inventory")
     elif choice == 2:
-        for item in inventory:
-            print("-------------------------")
-            print(item)
-            print("-------------------------")
+        view_inventory(inventory)
     elif choice == 3:
-        amount = 0
-        for item in inventory:
-            amount += item.estimated_value
-        print("Total Estimated Value: $",amount)
+        print("Total Estimated Value: $", get_total_value(inventory))
     elif choice == 4:
         print("Search by:")
         print("1. Set Name:")
@@ -100,22 +109,36 @@ while True:
                     new_condition = input("Enter new Condition: ")
                     item.condition = new_condition
                     print("Condition Updated")
+                    print(item)
                     break
                 elif edit_choice == 2:
                     new_price = float(input("Enter new Purchase Price: "))
                     item.purchase_price = new_price
                     print("Purcahse Price Updated")
+                    print(item)
+                    break
                 elif edit_choice == 3:
                     new_value = float(input("Enter new Estimated Value: "))
                     item.estimated_value = new_value
                     print("Estimated Value Updated")
+                    print(item)
+                    break
                 elif edit_choice == 4:
-                    new_complete = input("Enter New Completion: ").lower()
+                    new_complete = input("Enter New Completion: ").lower() == "yes"
                     item.complete = new_complete
                     print("Completion Updated")
+                    print(item)
+                    break
         if not found:
             print("Cant find set number in inventory")
     elif choice == 7:
+        inventory_data = []
+        for item in inventory:
+            inventory_data.append(item.to_dict())
+        with open("inventory.json", "w") as file:
+            json.dump(inventory_data, file, indent=4)
+
+        print("Inventory saved!")
         print("Goodbye!")
         break
     else:
